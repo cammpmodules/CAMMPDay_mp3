@@ -243,4 +243,158 @@ function AB1Aufgabe2b(F)
     plot(x,y, label = labels)
 end
 
+function AB1ZAPlay(A,a,b)
+    eps = 1/44100 
+    a_ton = a - 1;
+    b_ton = b + 1;
+    x = range(a_ton,stop=b_ton,step=eps);
+    y = zeros(Float64,length(x));
+    for i = 1:length(y)
+        y[i] = A(x[i])*sin(2*pi*200*x[i]);
+    end 
+    #display(y)
+    wavwrite(y, "SinustonAB1A2b.wav", Fs=44100);
+    #y, fs = wavread("SinustonAB1A2b.wav");
+    #wavplay(y, fs)
+	inline_audioplayer("SinustonAB1A2b.wav")
+end
+
+function AB1ZusatzaufgabeA(A4,t_min,a,b)
+    if t_min <= a || t_min >= b
+		@warn " t_min liegt nicht zwischen a und b!"
+    end
+    min = 1;
+    for i = -10:10
+        if A4(t_min + i/100) < A4(t_min)
+            min = 0;
+        end
+    end
+    if min == 0
+		@warn "Bei t = t_min ist die Amplitude nicht minimal!"
+    end
+    labels = ["dein Ton"];
+    if t_min > a && t_min < b 
+        x = a:(b-a)/10000:b;
+        y = zeros(length(x));
+        for i = 1:length(y)
+            y[i] = A4(x[i])*sin(2*pi*200*x[i]);
+        end
+        plot(x,y, label = labels)
+    end
+end
+
+function AB1ZBPlay(A,a,b)
+    eps = 1/44100 
+    x = range(a,stop=b,step=eps);
+    y = zeros(Float64,length(x));
+    for i = 1:length(y)
+        y[i] = A(x[i])*sin(2*pi*50*x[i]);
+    end 
+    #display(y)
+    wavwrite(y, "SinustonAB1ZB.wav", Fs=44100);
+    #y, fs = wavread("SinustonAB1ZB.wav");
+    #wavplay(y, fs)
+	inline_audioplayer("SinustonAB1ZB.wav")
+end
+  
+function AB1ZusatzaufgabeB(A5,t_max,a,b)
+    if t_max <= a || t_max >= b
+		@warn "t_max liegt nicht zwischen a und b!"
+    end
+    if A5(a) != 0 
+		@warn "Bei t = a hat die Amplitude nicht den Wert 0!"
+    end
+    if A5(b) != 0
+		@warn "Bei t = b hat die Amplitude nicht den Wert 0!"
+    end
+    max = 1;
+    for i = -10:10
+        if A5(t_max + i/100) > A5(t_max)
+            max = 0;
+        end
+    end
+    if max == 0
+		@warn "Bei t = t_max ist die Amplitude nicht maximal!"
+    end
+    labels = ["dein Ton"];
+    if t_max > a && t_max < b 
+        x = a:(b-a)/10000:b;
+        y = zeros(length(x));
+        for i = 1:length(y)
+            y[i] = A5(x[i])*sin(2*pi*50x[i]);
+        end
+        plot(x,y, label = labels)
+    end
+end
+
+function AB1ZCPlay(a,F)
+    eps = 1/44100
+    b = a + 1;
+    x = range(a,stop=b,step=eps);
+    y = zeros(Float64,length(x));
+    for i = 1:length(y)
+        y[i] = sin(F(x[i])*2*pi*200*x[i]);
+    end 
+    #display(y)
+    wavwrite(y, "SinustonAB1ZC.wav", Fs=44100);
+    #y, fs = wavread("SinustonAB1ZC.wav");
+    #wavplay(y, fs)
+	inline_audioplayer("SinustonAB1ZC.wav")
+end
+    
+
+function AB1ZusatzaufgabeC(a,b,F)
+    if b <= a 
+		@warn "b muss größer sein als a!"
+    end
+    increase = 1;
+    for i = 1:100
+        if F(a+(b-a)/100*i) < F(a+(b-a)/100*(i+1))
+            increase = 0;
+        end
+    end
+    if increase == 0
+		@warn "Die Frequenz fällt nicht auf dem Intervall [a,b]!"
+    end
+    labels = ["dein Signal"];
+    if a < b
+        x = a:(b-a)/10000:b;
+        y = zeros(length(x));
+        for i = 1:length(y)
+            y[i] = sin(F(x[i])*2*pi*200*x[i]);
+        end
+        plot(x,y, label = labels)
+    end
+end
+
+function AB1ZDPlay(a,b,F)
+    eps = 1/44100
+    x = range(a,stop=b,step=eps);
+    y = zeros(Float64,length(x));
+    for i = 1:length(y)
+        y[i] = sin(F(x[i])*2*pi*200*x[i]);
+    end 
+    #display(y)
+    wavwrite(y, "SinustonAB1ZD.wav", Fs=44100);
+    #y, fs = wavread("SinustonAB1ZD.wav");
+    #wavplay(y, fs)
+	inline_audioplayer("SinustonAB1ZD.wav")
+end
+    
+function AB1ZusatzaufgabeD(a,b,F)
+    if b <= a
+		@warn "b muss größer sein als a!"
+    end
+    labels = ["dein Signal"];
+    if a < b
+        x = a:(b-a)/10000:b;
+        y = zeros(length(x));
+        for i = 1:length(y)
+            y[i] = sin(F(x[i])*2*pi*200*x[i]);
+        end
+        plot(x,y, label = labels)
+    end
+end
+
+
 end
