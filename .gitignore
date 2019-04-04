@@ -199,4 +199,4 @@ dmypy.json
 
 ## Own additions
 #WAV files
-.wav
+*.wav
