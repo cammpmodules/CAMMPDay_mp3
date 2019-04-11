@@ -19,6 +19,11 @@ export AB1Aufgabe2a
 export AB1A2bPlay
 export AB1Aufgabe2b
 
+export AB2A1Play
+export AB2Aufgabe1
+export AB2Aufgabe2b1
+export AB2Aufgabe2b2
+
 function PlaySinusSound(frequency, amplitude, name)
     #Generate and play a sinus sound.
     eps = 1/44100 
@@ -396,5 +401,146 @@ function AB1ZusatzaufgabeD(a,b,F)
     end
 end
 
+function AB2A1Play(g)
+    eps = 1/44100
+    x = range(0.0,stop=2,step=eps);
+    y = zeros(Float64,length(x));
+    for i = 1:length(y)
+        y[i] = g(x[i]);
+    end 
+    #display(y)
+    wavwrite(y, "SinustonAB2A1.wav", Fs=44100);
+    #y, fs = wavread("SinustonAB2A1.wav");
+    #wavplay(y, fs)
+	inline_audioplayer("SinustonAB2A1.wav")
+end
+    
+function AB2Aufgabe1(g)
+    x = 0:0.0001:0.1;
+    y = zeros(length(x));
+    for i = 1:length(y)
+        y[i] = g(x[i]);
+    end
+    labels = ["dein Dreiklang"];
+    plot(x,y, label = labels)
+end
+
+function AB2Aufgabe2b1(g)
+    samplingrate = 44100;
+    x = 0:1/44100:6;
+    y = zeros(length(x));
+    for i = 1:length(y)
+        y[i] = g(x[i]);
+    end
+    yfft = fft(y);
+    f = zeros(length(yfft));
+    for i = 1:length(yfft)
+        f[i] = (i-1)*samplingrate/length(yfft);
+    end
+    fplot = f[1:5000];
+    yplot = yfft[1:5000];
+    yfind = abs.(yplot);
+    m1, ind1 = findmax(yfind);
+    yfind[ind1] = 0;
+    m2, ind2 = findmax(yfind);
+    yfind[ind2] = 0;
+    m3, ind3 = findmax(yfind);
+    labels = ["Frequenzspektrum"];
+    plot(fplot,abs.(yplot)/m3, label = labels)
+end
+
+function AB2Aufgabe2b2(g)
+    samplingrate = 44100;
+    x = 0:1/44100:6;
+    y = zeros(length(x));
+    for i = 1:length(y)
+        y[i] = g(x[i]);
+    end
+    yfft = fft(y);
+    f = zeros(length(yfft));
+    for i = 1:length(yfft)
+        f[i] = (i-1)*samplingrate/length(yfft);
+    end
+    fplot = f[1:5000];
+    yplot = yfft[1:5000];
+    yfind = abs.(yplot);
+    m1, ind1 = findmax(yfind);
+    yfind[ind1] = 0;
+    m2, ind2 = findmax(yfind);
+    yfind[ind2] = 0;
+    m3, ind3 = findmax(yfind);
+    print("Frequenz 1 = ", f[ind1], "     Frequenz 2 = ", f[ind2], "     Frequenz 3 = ", f[ind3])
+end
+
+function AB2A31Play(y1,y2,y3)
+    eps = 1/44100 
+    x = range(0.0,stop=2,step=eps);
+    y = zeros(Float64,length(x));
+    for i = 1:length(y)
+        y[i] = y1(x[i]);
+    end 
+    z = zeros(Float64,length(x));
+    for i = 1:length(z)
+        z[i] = y2(x[i]);
+    end
+    w = zeros(Float64,length(x));
+    for i = 1:length(w)
+        w[i] = y3(x[i]);
+    end
+    ton = [y; z; w];
+    #display(ton)
+    wavwrite(ton, "SinustonAB2A31.wav", Fs=4800);
+    #ton, fs = wavread("SinustonAB2A31.wav");
+    #wavplay(ton, fs)
+	inline_audioplayer("SinustonAB2A31.wav")
+end
+    
+function AB2Aufgabe31(y1,y2,y3)
+    x = 0:0.00001:0.01;
+    y = zeros(length(x),3);
+    for i = 1:length(x)
+        y[i,1] = y1(x[i]);
+        y[i,2] = y2(x[i]);
+        y[i,3] = y3(x[i]);
+    end
+    labels = ["y1" "y2" "y3"];
+    plot(x,y, label = labels)
+end
+
+function AB2A32Play(S)
+    eps = 1/44100
+    x = range(0.0,stop=2,step=eps);
+    y = zeros(Float64,length(x));
+    for i = 1:length(y)
+        y[i] = S(x[i]);
+    end 
+    #display(y)
+    wavwrite(y, "SinustonAB2A32.wav", Fs=48000);
+    #y, fs = wavread("SinustonAB2A32.wav");
+    #wavplay(y, fs)
+	inline_audioplayer("SinustonAB2A32.wav")
+end
+    
+function AB2Aufgabe32(S)
+    x = 0:0.00001:0.01;
+    y = zeros(length(x));
+    for i = 1:length(x)
+        y[i] = S(x[i]);
+    end
+    labels = ["S"];
+    plot(x,y, label = labels)
+end
+
+function AB2Zusatzaufgabe(F)
+    saeg(t) = mod2pi(t+pi)-pi;
+    x = -2*pi:0.01:2*pi;
+    y = zeros(length(x),2);
+    for i = 1:length(x)
+        y[i,1] = F(x[i]);
+        y[i,2] = saeg(x[i]);
+    end
+    labels = ["F" "Saegezahnfunktion"];
+    plot(x,y, label = labels)
+end
 
 end
