@@ -24,6 +24,10 @@ export AB2Aufgabe1
 export AB2Aufgabe2b1
 export AB2Aufgabe2b2
 
+export AB3A1aPlay
+export AB1A1bPlay
+export AB3Aufgabe1c
+
 function PlaySinusSound(frequency, amplitude, name)
     #Generate and play a sinus sound.
     eps = 1/44100 
@@ -541,6 +545,51 @@ function AB2Zusatzaufgabe(F)
     end
     labels = ["F" "Saegezahnfunktion"];
     plot(x,y, label = labels)
+end
+
+function AB3A1aPlay(f)
+    PlaySinusSound(f, 1, "SinustonAB3A1.wav");
+end
+
+function AB3A1cPlay()
+    g(t) = sin(230*2*pi*t) + sin(520*2*pi*t) + sin(1010*2*pi*t) + sin(0.002*2*pi*t);
+    eps = 1/44100
+    x = range(0.0,stop=2,step=eps);
+    y = zeros(Float64,length(x));
+    for i = 1:length(y)
+        y[i] = g(x[i]);
+    end 
+    #display(y)
+    wavwrite(y, "SinustonAB3A1c.wav", Fs=44100);
+    #y, fs = wavread("SinustonAB2A1.wav");
+    #wavplay(y, fs)
+	inline_audioplayer("SinustonAB3A1c.wav")
+end
+
+function AB3Aufgabe1c()
+    g(t) = sin(230*2*pi*t) + sin(520*2*pi*t) + sin(1010*2*pi*t) + sin(0.02*2*pi*t);
+    samplingrate = 44100;
+    x = 0:1/44100:6;
+    y = zeros(length(x));
+    for i = 1:length(y)
+        y[i] = g(x[i]);
+    end
+    yfft = fft(y);
+    f = zeros(length(yfft));
+    for i = 1:length(yfft)
+        f[i] = (i-1)*samplingrate/length(yfft);
+    end
+    fplot = f[1:9000];
+    yplot = yfft[1:9000];
+    yfind = abs.(yplot);
+    m1, ind1 = findmax(yfind);
+    yfind[ind1] = 0;
+    m2, ind2 = findmax(yfind);
+    yfind[ind2] = 0;
+    m3, ind3 = findmax(yfind);
+
+    labels = ["Frequenzspektrum"];
+    plot(fplot,abs.(yplot)/m3, label = labels)
 end
 
 end
