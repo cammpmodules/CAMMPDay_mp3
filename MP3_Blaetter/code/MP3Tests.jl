@@ -592,4 +592,105 @@ function AB3Aufgabe1c()
     plot(fplot,abs.(yplot)/m3, label = labels)
 end
 
+function AB3A2aPlay(y1,y2,y3)
+    f_1(t) = sin(y1*2*pi*t)
+    f_2(t) = sin(y2*2*pi*t)
+    f_3(t) = sin(y3*2*pi*t)
+
+    eps = 1/44100 
+    x = range(0.0,stop=2,step=eps);
+    y = zeros(Float64,length(x));
+    for i = 1:length(y)
+        y[i] = f_1(x[i]);
+    end 
+    z = zeros(Float64,length(x));
+    for i = 1:length(z)
+        z[i] = f_2(x[i]);
+    end
+    w = zeros(Float64,length(x));
+    for i = 1:length(w)
+        w[i] = f_3(x[i]);
+    end
+    ton = [y; z; w];
+    #display(ton)
+    wavwrite(ton, "SinustonAB2A31.wav", Fs=4800);
+    #ton, fs = wavread("SinustonAB2A31.wav");
+    #wavplay(ton, fs)
+	inline_audioplayer("SinustonAB2A31.wav")
+end
+
+function AB3A2bPlay(f)
+    PlaySinusSound(f, 1, "SinustonAB3A1.wav");
+end
+
+function AB3Aufgabe2b(y4)
+    f_4(t) = sin(y4*2*pi*t)
+
+    x = 0:0.00001:0.01;
+    y = zeros(length(x),1);
+    for i = 1:length(x)
+        y[i,1] = f_4(x[i]); 
+    end
+    labels = ["f_4"];
+    #display(y)
+    plot(x,y, label = labels)
+end
+
+function AB3A2bPlay(y1,y2,y3, y4)
+    if NaN == y4 
+        @warn "Bitte gib einen wert für f_4 an."
+    end
+
+    f_1(t) = sin(y1*2*pi*t)
+    f_2(t) = sin(y2*2*pi*t)
+    f_3(t) = sin(y3*2*pi*t)
+    f_4(t) = sin(y4*2*pi*t)
+
+    eps = 1/44100 
+    x = range(0.0,stop=2,step=eps);
+    y = zeros(Float64,length(x));
+    for i = 1:length(y)
+        y[i] = f_1(x[i]);
+    end 
+    z = zeros(Float64,length(x));
+    for i = 1:length(z)
+        z[i] = f_2(x[i]);
+    end
+    w = zeros(Float64,length(x));
+    for i = 1:length(w)
+        w[i] = f_3(x[i]);
+    end
+    v = zeros(Float64,length(x));
+    for i = 1:length(w)
+        v[i] = f_4(x[i]);
+    end
+
+    ton = [y; z; w; v];
+    #display(ton)
+    wavwrite(ton, "SinustonAB2A31.wav", Fs=4800);
+    #ton, fs = wavread("SinustonAB2A31.wav");
+    #wavplay(ton, fs)
+    inline_audioplayer("SinustonAB2A31.wav")
+    #plot(x,ton)
+end
+
+function AB3Aufgabe2c(y1, y2, y3, y4)
+    f_1(t) = sin(y1*2*pi*t)
+    f_2(t) = sin(y2*2*pi*t)
+    f_3(t) = sin(y3*2*pi*t)
+    f_4(t) = sin(y4*2*pi*t)
+
+    x = 0:0.00001:0.01;
+    y = zeros(length(x),4);
+    for i = 1:length(x)
+        y[i,1] = f_1(x[i]); 
+        y[i,2] = f_2(x[i]); 
+        y[i,3] = f_3(x[i]); 
+        y[i,4] = f_4(x[i]); 
+    end
+    labels = ["f_1" "f_2" "f_3" "f_4"];
+    #display(y)
+    plot(x,y, label = labels)
+end
+
 end
