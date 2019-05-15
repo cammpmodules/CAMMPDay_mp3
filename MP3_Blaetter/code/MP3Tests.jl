@@ -44,6 +44,19 @@ function PlaySinusSound(frequency, amplitude, name)
     plot(y)
 end
 
+function PlaySound(f, amplitude, name)
+    #Generate and plays a the sound described by f.
+    eps = 1/44100 
+    x = range(0.0,stop=2,step=eps);
+    y = zeros(Float64,length(x));
+    for i = 1:length(y)
+        y[i] = amplitude * f(x[i]);
+    end
+    wavwrite(y, string(name, ".wav"), Fs=44100);
+	inline_audioplayer(string(name, ".wav"))
+    plot(y)
+end
+
 
 function AB1A1aPlay()
     PlaySinusSound(200, 1, "SinustonAB1A1a")
@@ -593,34 +606,12 @@ function AB3Aufgabe1c()
 end
 
 function AB3A2aPlay(y1,y2,y3)
-    f_1(t) = sin(y1*2*pi*t)
-    f_2(t) = sin(y2*2*pi*t)
-    f_3(t) = sin(y3*2*pi*t)
-
-    eps = 1/44100 
-    x = range(0.0,stop=2,step=eps);
-    y = zeros(Float64,length(x));
-    for i = 1:length(y)
-        y[i] = f_1(x[i]);
-    end 
-    z = zeros(Float64,length(x));
-    for i = 1:length(z)
-        z[i] = f_2(x[i]);
-    end
-    w = zeros(Float64,length(x));
-    for i = 1:length(w)
-        w[i] = f_3(x[i]);
-    end
-    ton = [y; z; w];
-    #display(ton)
-    wavwrite(ton, "SinustonAB2A31.wav", Fs=4800);
-    #ton, fs = wavread("SinustonAB2A31.wav");
-    #wavplay(ton, fs)
-	inline_audioplayer("SinustonAB2A31.wav")
+    f(t) = sin(y1*2*pi*t) + sin(y2*2*pi*t) + sin(y3*2*pi*t)
+    PlaySound(f, 1, "SoundAB3A2a")
 end
 
 function AB3A2bPlay(f)
-    PlaySinusSound(f, 1, "SinustonAB3A1.wav");
+    PlaySinusSound(f, 1, "SinustonAB3A2b");
 end
 
 function AB3Aufgabe2b(y4)
@@ -636,42 +627,9 @@ function AB3Aufgabe2b(y4)
     plot(x,y, label = labels)
 end
 
-function AB3A2bPlay(y1,y2,y3, y4)
-    if NaN == y4 
-        @warn "Bitte gib einen wert für f_4 an."
-    end
-
-    f_1(t) = sin(y1*2*pi*t)
-    f_2(t) = sin(y2*2*pi*t)
-    f_3(t) = sin(y3*2*pi*t)
-    f_4(t) = sin(y4*2*pi*t)
-
-    eps = 1/44100 
-    x = range(0.0,stop=2,step=eps);
-    y = zeros(Float64,length(x));
-    for i = 1:length(y)
-        y[i] = f_1(x[i]);
-    end 
-    z = zeros(Float64,length(x));
-    for i = 1:length(z)
-        z[i] = f_2(x[i]);
-    end
-    w = zeros(Float64,length(x));
-    for i = 1:length(w)
-        w[i] = f_3(x[i]);
-    end
-    v = zeros(Float64,length(x));
-    for i = 1:length(w)
-        v[i] = f_4(x[i]);
-    end
-
-    ton = [y; z; w; v];
-    #display(ton)
-    wavwrite(ton, "SinustonAB2A31.wav", Fs=4800);
-    #ton, fs = wavread("SinustonAB2A31.wav");
-    #wavplay(ton, fs)
-    inline_audioplayer("SinustonAB2A31.wav")
-    #plot(x,ton)
+function AB3A2cPlay(y1,y2,y3, y4)
+    f(t) = sin(y1*2*pi*t) + sin(y2*2*pi*t) + sin(y3*2*pi*t) + sin(y4*2*pi*t)
+    PlaySound(f, 1, "SoundAB3A2c")
 end
 
 function AB3Aufgabe2c(y1, y2, y3, y4)
@@ -691,6 +649,31 @@ function AB3Aufgabe2c(y1, y2, y3, y4)
     labels = ["f_1" "f_2" "f_3" "f_4"];
     #display(y)
     plot(x,y, label = labels)
+end
+
+function AB3A3aPlay()
+    klang_1(t) = sin(2*pi*100*t) + sin(2*pi*200*t) + sin(2*pi*300*t);
+    klang_2(t) = sin(2*pi*400*t) + sin(2*pi*500*t) + sin(2*pi*600*t);
+    klang_3(t) = sin(2*pi*700*t) + sin(2*pi*800*t) + sin(2*pi*900*t);
+
+    eps = 1/44100 
+    x = range(0.0,stop=1.5,step=eps);
+    y = zeros(Float64,length(x));
+    for i = 1:length(y)
+        if i < 0.50/eps
+            y[i] = klang_1(x[i]);
+        elseif i < 1/eps
+            y[i] = klang_2(x[i]);
+        else
+            y[i] = klang_3(x[i]);
+        end
+        
+    end
+    #display(y)  
+    wavwrite(y, "AB3A3a.wav", Fs=44100);
+    #y, fs = wavread("SinustonAB1A1a.wav");
+    #wavplay(y, fs)
+	inline_audioplayer("AB3A3a.wav")
 end
 
 end
