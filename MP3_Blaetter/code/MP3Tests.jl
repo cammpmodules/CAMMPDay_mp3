@@ -57,7 +57,6 @@ function PlaySound(f, amplitude, name)
     plot(y)
 end
 
-
 function AB1A1aPlay()
     PlaySinusSound(200, 1, "SinustonAB1A1a")
 
@@ -651,7 +650,7 @@ function AB3Aufgabe2c(y1, y2, y3, y4)
     plot(x,y, label = labels)
 end
 
-function AB3A3aPlay()
+function generateAB3A3Sound()
     klang_1(t) = sin(2*pi*100*t) + sin(2*pi*200*t) + sin(2*pi*300*t);
     klang_2(t) = sin(2*pi*400*t) + sin(2*pi*500*t) + sin(2*pi*600*t);
     klang_3(t) = sin(2*pi*700*t) + sin(2*pi*800*t) + sin(2*pi*900*t);
@@ -669,11 +668,40 @@ function AB3A3aPlay()
         end
         
     end
+    return y;
+end
+
+function AB3A3aPlay()
+    y = generateAB3A3Sound();
     #display(y)  
     wavwrite(y, "AB3A3a.wav", Fs=44100);
     #y, fs = wavread("SinustonAB1A1a.wav");
     #wavplay(y, fs)
 	inline_audioplayer("AB3A3a.wav")
+end
+
+function AB3Aufgabe3b()
+    samplingrate = 44100;
+    y = generateAB3A3Sound();
+    yfft = fft(y);
+
+    f = zeros(length(yfft));
+    for i = 1:length(yfft)
+        f[i] = (i-1)*samplingrate/length(yfft);
+    end
+
+    freq = zeros(9)
+    yplot = yfft[1:9000];
+    yfind = abs.(yplot);
+    for i = 1:9
+        m, ind = findmax(yfind);
+        freq[i] = f[ind]
+        yfind[ind] = 0 
+    end
+    
+    for i = 1:9
+        print(string( "Frequenz ", i, ":", freq[i], "; \n\r"))
+    end
 end
 
 end
